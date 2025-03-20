@@ -77,7 +77,6 @@ if (!admin.apps.length) {
 
 let cachedToken = null;
 let tokenExpiry = 0;
-
 const getAccessToken = async () => {
   const currentTime = Math.floor(Date.now() / 1000);
 
@@ -89,15 +88,19 @@ const getAccessToken = async () => {
 
   console.log("🔄 Generating new token...");
 
-  // ✅ Generate new token using applicationDefault()
-  const token = await admin.credential.applicationDefault().getAccessToken();
+  try {
+    // Generate new token using the same credential used to initialize the app
+    const token = await admin.app().options.credential.getAccessToken();
+    
+    cachedToken = token.access_token;
+    tokenExpiry = currentTime + token.expires_in;
 
-  cachedToken = token.access_token;
-  tokenExpiry = currentTime + token.expires_in;
-
-  console.log("✅ New token generated");
-
-  return cachedToken;
+    console.log("✅ New token generated");
+    return cachedToken;
+  } catch (error) {
+    console.error("Error generating token:", error);
+    throw error;
+  }
 };
 
 module.exports = { admin, getAccessToken };
