@@ -80,10 +80,14 @@ const { getAccessToken } = require("./firebaseAdmin");
 const axios = require("axios");
 const app = express();
 const PORT = 8000;
+require('dotenv').config();
 
 // Enable CORS (for cross-origin requests)
 app.use(cors());
 app.use(express.json());
+
+
+console.log("FIREBASE_ADMIN_CONFIG:", process.env.FIREBASE_ADMIN_CONFIG ? "Loaded" : "Not Loaded");
 
 app.get("/get-token", async (req, res) => {
   try {
