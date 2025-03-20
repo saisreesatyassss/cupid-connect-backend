@@ -5,7 +5,6 @@
 # Firebase service account key
 
 # Ignore locally but include in Vercel deployment
-/config/firebaseAdmin.json
 
 
 # dependencies
